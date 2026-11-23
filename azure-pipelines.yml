@@ -1,0 +1,17 @@
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: NodeTool@0
+    displayName: Install Node.js
+    inputs:
+      versionSpec: '22.x'
+
+  - script: npm test
+    displayName: Run tests
+
+  - script: docker build -t azure-cicd-app:$(Build.BuildId) .
+    displayName: Build Docker image
