@@ -1,0 +1,11 @@
+{
+  "name": "azure-cicd-pipeline",
+  "version": "1.0.0",
+  "description": "Simple web app for an Azure CI/CD pipeline project",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node -e \"console.log('Tests passed')\""
+  },
+  "license": "MIT"
+}
