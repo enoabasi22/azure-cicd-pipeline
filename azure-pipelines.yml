@@ -6,7 +6,9 @@ pool:
 
 variables:
   dockerRegistryServiceConnection: 'acr-connection'
+  azureServiceConnection: 'azure-connection'
   imageRepository: 'azure-cicd-app'
+  registryLoginServer: 'enoabasicd.azurecr.io'
   tag: '$(Build.BuildId)'
 
 steps:
@@ -28,3 +30,16 @@ steps:
       tags: |
         $(tag)
         latest
+
+  - task: AzureCLI@2
+    displayName: Deploy to Azure Container Apps
+    inputs:
+      azureSubscription: $(azureServiceConnection)
+      scriptType: bash
+      scriptLocation: inlineScript
+      inlineScript: |
+        az extension add --name containerapp --upgrade --only-show-errors
+        az containerapp update \
+          --name ca-cicd-app \
+          --resource-group rg-cicd-project \
+          --image $(registryLoginServer)/$(imageRepository):$(tag)
